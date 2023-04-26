@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>查看图片</title>
+		<link rel="stylesheet" href="../../../component/pear/css/pear.css" />
+		<style>
+			.image-container {
+				position: relative;
+				display: inline-block;
+			}
+
+			.rotate-icons,
+			.zoom-icons {
+				position: fixed;
+				bottom: 110px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			    width: 80px;
+				height: 22px;
+				background-color: rgba(0, 0, 0, 0.5);
+				color: #fff;
+				border-radius: 3px;
+				padding: 5px 7px;
+				opacity: 0.3;
+				transition: opacity 0.3s ease-in-out;
+			}
+
+			.rotate-icons {
+				left: 10px;
+			}
+
+			.zoom-icons {
+				right: 10px;
+				justify-content: space-around;
+				width: 60px;
+			}
+
+			.rotate-icons i,
+			.zoom-icons i {
+				cursor: pointer;
+			}
+
+			.rotate-icons:hover,
+			.zoom-icons:hover {
+				opacity: 1;
+			}
+			
+			.font-12{
+				font-size: 12px;
+				color: #fff;
+			}
+
+		</style>
+	</head>
+	<body>
+		<form class="layui-form operateModal" action="">
+			<div class="mainBox">
+				<div class="main-container">
+					<div class="image-container">
+						<img src="../../../asset/img/background_1.jpeg" alt="" width="100%">
+						<div class="flex-Box-space">
+							<div class="rotate-icons">
+								<i class="layui-icon layui-icon-rotate-right font-12">左旋转</i>
+								<i class="layui-icon layui-icon-rotate-left font-12">右旋转</i>
+							</div>
+							<div class="zoom-icons">
+								<i class="layui-icon layui-icon-zoom-in font-12">放大</i>
+								<i class="layui-icon layui-icon-zoom-out font-12">缩小</i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="button-container">
+					<button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+						lay-filter="user-save">
+						返回
+					</button>
+				</div>
+			</div>
+		</form>
+		<script src="../../../component/layui/layui.js"></script>
+		<script src="../../../component/pear/pear.js"></script>
+		<script>
+			layui.use(['layer', 'form', 'jquery'], function() {
+				let form = layui.form;
+				let $ = layui.jquery;
+				var layer = layui.layer;
+
+				form.on('submit(user-save)', function(data) {
+					parent.layer.close(parent.layer.getFrameIndex(window
+						.name)); //关闭当前页
+					return false;
+				});
+
+
+				// 旋转角度
+				var rotateAngle = 0;
+
+				// 点击左旋转按钮
+				$('.layui-icon-rotate-left').click(function() {
+					rotateAngle -= 90;
+					$('.image-container img').css({
+						'-webkit-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-moz-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-o-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-ms-transform': 'rotate(' + rotateAngle + 'deg)',
+						'transform': 'rotate(' + rotateAngle + 'deg)'
+					});
+				});
+
+				// 点击右旋转按钮
+				$('.layui-icon-rotate-right').click(function() {
+					rotateAngle += 90;
+					$('.image-container img').css({
+						'-webkit-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-moz-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-o-transform': 'rotate(' + rotateAngle + 'deg)',
+						'-ms-transform': 'rotate(' + rotateAngle + 'deg)',
+						'transform': 'rotate(' + rotateAngle + 'deg)'
+					});
+				});
+
+				// 缩放比例
+				var zoomRatio = 1;
+
+				// 点击放大按钮
+				$('.layui-icon-zoom-in').click(function() {
+					if (zoomRatio < 2) {
+						zoomRatio += 0.1;
+						$('.image-container img').css({
+							'width': (100 * zoomRatio) + '%',
+				   'height': 'auto'
+				  });
+					} else {
+						layer.msg('已经缩放到最大啦！');
+					}
+				});
+
+				// 点击缩小按钮
+				$('.layui-icon-zoom-out').click(function() {
+					if (zoomRatio > 0.3) {
+						zoomRatio -= 0.1;
+				 	$('.image-container img').css({
+				   'width': (100 * zoomRatio) + '%',
+							'height': 'auto'
+						});
+					} else {
+						layer.msg('已经缩放到最小啦！');
+					}
+				});
+			})
+		</script>
+	</body>
+</html>
